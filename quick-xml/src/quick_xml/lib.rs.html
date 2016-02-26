@@ -646,6 +646,8 @@
 <span id="603">603</span>
 <span id="604">604</span>
 <span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Quick XmlReader reader which performs **very** well.</span>
 <span class='doccomment'>//!</span>
@@ -835,7 +837,9 @@
     }
 
     <span class='doccomment'>/// Loop over elements and apply a `f` closure on start elements</span>
+    <span class='doccomment'>///</span>
     <span class='doccomment'>/// Ends when `end` `Event::End` is found</span>
+    <span class='doccomment'>/// This helper method is particularly useful for nested searches</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// # Example:</span>
     <span class='doccomment'>/// ```</span>
