@@ -645,6 +645,7 @@
 <span id="602">602</span>
 <span id="603">603</span>
 <span id="604">604</span>
+<span id="605">605</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Quick XmlReader reader which performs **very** well.</span>
 <span class='doccomment'>//!</span>
@@ -836,8 +837,9 @@
     <span class='doccomment'>/// Loop over elements and apply a `f` closure on start elements</span>
     <span class='doccomment'>/// Ends when `end` `Event::End` is found</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Example:</span>
-    <span class='doccomment'>/// ```rust</span>
+    <span class='doccomment'>/// # Example:</span>
+    <span class='doccomment'>/// ```</span>
+    <span class='doccomment'>/// # use quick_xml::{XmlReader, Event};</span>
     <span class='doccomment'>/// let mut r = XmlReader::from_str(&quot;&lt;a&gt;&lt;b&gt;test&lt;/b&gt;\</span>
     <span class='doccomment'>///     &lt;b&gt;test 2&lt;/b&gt;&lt;c/&gt;&lt;b&gt;test 3&lt;/b&gt;&lt;/a&gt;&quot;).trim_text(true);</span>
     <span class='doccomment'>/// let mut tests = Vec::new();</span>
