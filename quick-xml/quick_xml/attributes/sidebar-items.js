@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Attributes",""]]});
+initSidebarItems({"struct":[["Attributes","Iterator over attributes key/value pairs"]]});

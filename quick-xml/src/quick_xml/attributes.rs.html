@@ -142,9 +142,21 @@
 <span id="99"> 99</span>
 <span id="100">100</span>
 <span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
 </pre><pre class='rust '>
+<span class='doccomment'>//! Xml Attributes module</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Provides an iterator over attributes key/value pairs</span>
 <span class='kw'>use</span> <span class='ident'>error</span>::{<span class='ident'>Error</span>, <span class='prelude-ty'>Result</span>};
 
+<span class='doccomment'>/// Iterator over attributes key/value pairs</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Attributes</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
     <span class='ident'>bytes</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> [<span class='ident'>u8</span>],
     <span class='ident'>position</span>: <span class='ident'>usize</span>,
@@ -152,6 +164,10 @@
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> <span class='ident'>Attributes</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
+    <span class='doccomment'>/// creates a new attribute from a buffer</span>
+    <span class='doccomment'>/// </span>
+    <span class='doccomment'>/// pos represents current position of the iterator </span>
+    <span class='doccomment'>/// (starts after start element name)</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>buf</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> [<span class='ident'>u8</span>], <span class='ident'>pos</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>Attributes</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span> {
         <span class='ident'>Attributes</span> {
             <span class='ident'>bytes</span>: <span class='ident'>buf</span>,
