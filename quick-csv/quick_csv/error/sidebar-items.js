@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Error","An error produced by an operation on CSV data."]],"type":[["Result","Result type"]]});

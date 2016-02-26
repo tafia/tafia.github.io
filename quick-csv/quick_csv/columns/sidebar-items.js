@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BytesColumns","Iterator over bytes slice of columns"],["Columns","&str iterator on columns"]]});
