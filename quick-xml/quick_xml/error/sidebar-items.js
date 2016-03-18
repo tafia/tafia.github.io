@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Error","An error produced by an operation on Xml data."]],"type":[["Result","Result type"]]});
+initSidebarItems({"enum":[["Error","An error produced by an operation on Xml data."]],"type":[["Result","Result type"],["ResultPos","Result type with current buffer position"]]});

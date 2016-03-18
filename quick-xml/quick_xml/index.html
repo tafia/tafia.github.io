@@ -46,10 +46,11 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/quick_xml/lib.rs.html#1-642' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/quick_xml/src/lib.rs.html.html#1-608' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Quick XmlReader reader which performs <strong>very</strong> well.</p>
 
-<h1 id='example' class='section-header'><a href='#example'>Example</a></h1><pre class='rust rust-example-rendered'>
+<h1 id='example' class='section-header'><a href='#example'>Example</a></h1>
+<pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>quick_xml</span>::{<span class='ident'>XmlReader</span>, <span class='ident'>Event</span>};
  
 <span class='kw'>let</span> <span class='ident'>xml</span> <span class='op'>=</span> <span class='string'>r#&quot;&lt;tag1 att1 = &quot;test&quot;&gt;
@@ -72,12 +73,13 @@
             }
         },
         <span class='prelude-val'>Ok</span>(<span class='ident'>Event</span>::<span class='ident'>Text</span>(<span class='ident'>e</span>)) <span class='op'>=&gt;</span> <span class='ident'>txt</span>.<span class='ident'>push</span>(<span class='ident'>e</span>.<span class='ident'>into_string</span>()),
-        <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;{:?}&quot;</span>, <span class='ident'>e</span>),
+        <span class='prelude-val'>Err</span>((<span class='ident'>e</span>, <span class='ident'>pos</span>)) <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;{:?} at position {}&quot;</span>, <span class='ident'>e</span>, <span class='ident'>pos</span>),
         _ <span class='op'>=&gt;</span> (),
     }
 }</pre>
 
-<h1 id='example-of-transforming-xml' class='section-header'><a href='#example-of-transforming-xml'>Example of transforming XML</a></h1><pre class='rust rust-example-rendered'>
+<h1 id='example-of-transforming-xml' class='section-header'><a href='#example-of-transforming-xml'>Example of transforming XML</a></h1>
+<pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>quick_xml</span>::{<span class='ident'>AsStr</span>, <span class='ident'>Element</span>, <span class='ident'>Event</span>, <span class='ident'>XmlReader</span>, <span class='ident'>XmlWriter</span>};
 <span class='kw'>use</span> <span class='ident'>quick_xml</span>::<span class='ident'>Event</span>::<span class='op'>*</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>Cursor</span>;
@@ -103,7 +105,7 @@
             <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>writer</span>.<span class='ident'>write</span>(<span class='ident'>End</span>(<span class='ident'>Element</span>::<span class='ident'>new</span>(<span class='string'>&quot;my_elem&quot;</span>))).<span class='ident'>is_ok</span>());
         },
         <span class='prelude-val'>Ok</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>writer</span>.<span class='ident'>write</span>(<span class='ident'>e</span>).<span class='ident'>is_ok</span>()),
-        <span class='prelude-val'>Err</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;{:?}&quot;</span>, <span class='ident'>e</span>),
+        <span class='prelude-val'>Err</span>((<span class='ident'>e</span>, <span class='ident'>pos</span>)) <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;{:?} at position {}&quot;</span>, <span class='ident'>e</span>, <span class='ident'>pos</span>),
     }
 }
 
