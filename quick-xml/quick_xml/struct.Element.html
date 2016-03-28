@@ -46,13 +46,23 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-237' class='srclink' href='../src/quick_xml/lib.rs.html#386-391' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-237' class='srclink' href='../src/quick_xml/lib.rs.html#403-412' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Element {
     // some fields omitted
-}</pre><div class='docblock'><p>Wrapper around Vec<u8> representing the content of an event (aka node)</p>
+}</pre><div class='docblock'><p>General content of an event (aka node)</p>
 
-<p>The purpose of not returning a String directly is to postpone calculations (utf8 conversion)
-to the last moment: byte checks are enough in most cases</p>
+<p>Element is a wrapper over the bytes representing the node:</p>
+
+<p>E.g. given a node <code>&lt;name att1=&quot;a&quot;, att2=&quot;b&quot;&gt;</code>, the corresponding <code>Event</code> will be 
+<code>rust Event::Start(Element { buf: b&quot;name att1=\&quot;a\&quot;, att2=\&quot;b\&quot;&quot;, start: 0 end: b&quot;name att1=\&quot;a\&quot;, att2=\&quot;b\&quot;&quot;.len(), name_end: b&quot;name&quot;.len() })</code></p>
+
+<p>For performance reasons, most of the time, no character searches but 
+<code>b&#39;&lt;&#39;</code> and <code>b&#39;&gt;&#39;</code> are performed:
+- no attribute parsing: use lazy <code>Attributes</code> iterator only when needed
+- no namespace awareness as it requires parsing all <code>Start</code> element attributes
+- no utf8 conversion: prefer searching statically known bytes patterns 
+when possible (<code>e.name() == b&quot;myname&quot;</code>) then use the <code>.as_str()</code> 
+or <code>.into_string()</code> methods</p>
 </div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../quick_xml/struct.Element.html' title='quick_xml::Element'>Element</a></code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>&lt;A&gt;(name: A) -&gt; <a class='struct' href='../quick_xml/struct.Element.html' title='quick_xml::Element'>Element</a> <span class='where'>where A: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>]</a>&gt;</span></code></h4>
 <div class='docblock'><p>Creates a new Element from the given name.
 name is a reference that can be converted to a byte slice, such as &amp;[u8] or &amp;str</p>

@@ -707,6 +707,27 @@
 <span id="664">664</span>
 <span id="665">665</span>
 <span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Quick XmlReader reader which performs **very** well.</span>
 <span class='doccomment'>//!</span>
@@ -1089,14 +1110,35 @@
 }
 
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
-<span class='doccomment'>/// Wrapper around Vec&lt;u8&gt; representing the content of an event (aka node)</span>
+<span class='doccomment'>/// General content of an event (aka node)</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// The purpose of not returning a String directly is to postpone calculations (utf8 conversion)</span>
-<span class='doccomment'>/// to the last moment: byte checks are enough in most cases</span>
+<span class='doccomment'>/// Element is a wrapper over the bytes representing the node:</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// E.g. given a node `&lt;name att1=&quot;a&quot;, att2=&quot;b&quot;&gt;`, the corresponding `Event` will be </span>
+<span class='doccomment'>/// ```rust</span>
+<span class='doccomment'>/// Event::Start(Element { </span>
+<span class='doccomment'>///     buf:    b&quot;name att1=\&quot;a\&quot;, att2=\&quot;b\&quot;&quot;,</span>
+<span class='doccomment'>///     start:  0</span>
+<span class='doccomment'>///     end:    b&quot;name att1=\&quot;a\&quot;, att2=\&quot;b\&quot;&quot;.len(),</span>
+<span class='doccomment'>///     name_end: b&quot;name&quot;.len()</span>
+<span class='doccomment'>/// })</span>
+<span class='doccomment'>/// ```</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// For performance reasons, most of the time, no character searches but </span>
+<span class='doccomment'>/// `b&#39;&lt;&#39;` and `b&#39;&gt;&#39;` are performed:</span>
+<span class='doccomment'>/// - no attribute parsing: use lazy `Attributes` iterator only when needed</span>
+<span class='doccomment'>/// - no namespace awareness as it requires parsing all `Start` element attributes</span>
+<span class='doccomment'>/// - no utf8 conversion: prefer searching statically known bytes patterns </span>
+<span class='doccomment'>/// when possible (`e.name() == b&quot;myname&quot;`) then use the `.as_str()` </span>
+<span class='doccomment'>/// or `.into_string()` methods</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Element</span> {
+    <span class='doccomment'>/// content of the element, before any utf8 conversion</span>
     <span class='ident'>buf</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>,
+    <span class='doccomment'>/// start of name, e.g for `&lt;![CDATA[` node, `start = b&quot;![CDATA[&quot;.len()`</span>
     <span class='ident'>start</span>: <span class='ident'>usize</span>,
+    <span class='doccomment'>/// end of content: e.g. for `&lt;?...?&gt;` node, `end = buf.len() - b&quot;?&quot;.len()`</span>
     <span class='ident'>end</span>: <span class='ident'>usize</span>,
+    <span class='doccomment'>/// name byte length</span>
     <span class='ident'>name_end</span>: <span class='ident'>usize</span>,
 }
 
