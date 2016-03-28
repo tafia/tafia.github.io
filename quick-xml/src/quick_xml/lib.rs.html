@@ -728,6 +728,7 @@
 <span id="685">685</span>
 <span id="686">686</span>
 <span id="687">687</span>
+<span id="688">688</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Quick XmlReader reader which performs **very** well.</span>
 <span class='doccomment'>//!</span>
@@ -1115,10 +1116,11 @@
 <span class='doccomment'>/// Element is a wrapper over the bytes representing the node:</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// E.g. given a node `&lt;name att1=&quot;a&quot;, att2=&quot;b&quot;&gt;`, the corresponding `Event` will be </span>
-<span class='doccomment'>/// ```rust</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// ```ignore</span>
 <span class='doccomment'>/// Event::Start(Element { </span>
 <span class='doccomment'>///     buf:    b&quot;name att1=\&quot;a\&quot;, att2=\&quot;b\&quot;&quot;,</span>
-<span class='doccomment'>///     start:  0</span>
+<span class='doccomment'>///     start:  0,</span>
 <span class='doccomment'>///     end:    b&quot;name att1=\&quot;a\&quot;, att2=\&quot;b\&quot;&quot;.len(),</span>
 <span class='doccomment'>///     name_end: b&quot;name&quot;.len()</span>
 <span class='doccomment'>/// })</span>

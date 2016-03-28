@@ -46,15 +46,21 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-237' class='srclink' href='../src/quick_xml/lib.rs.html#403-412' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-237' class='srclink' href='../src/quick_xml/lib.rs.html#404-413' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Element {
     // some fields omitted
 }</pre><div class='docblock'><p>General content of an event (aka node)</p>
 
 <p>Element is a wrapper over the bytes representing the node:</p>
 
-<p>E.g. given a node <code>&lt;name att1=&quot;a&quot;, att2=&quot;b&quot;&gt;</code>, the corresponding <code>Event</code> will be 
-<code>rust Event::Start(Element { buf: b&quot;name att1=\&quot;a\&quot;, att2=\&quot;b\&quot;&quot;, start: 0 end: b&quot;name att1=\&quot;a\&quot;, att2=\&quot;b\&quot;&quot;.len(), name_end: b&quot;name&quot;.len() })</code></p>
+<p>E.g. given a node <code>&lt;name att1=&quot;a&quot;, att2=&quot;b&quot;&gt;</code>, the corresponding <code>Event</code> will be </p>
+<pre class='rust rust-example-rendered'>
+<span class='ident'>Event</span>::<span class='ident'>Start</span>(<span class='ident'>Element</span> { 
+    <span class='ident'>buf</span>:    <span class='string'>b&quot;name att1=\&quot;a\&quot;, att2=\&quot;b\&quot;&quot;</span>,
+    <span class='ident'>start</span>:  <span class='number'>0</span>,
+    <span class='ident'>end</span>:    <span class='string'>b&quot;name att1=\&quot;a\&quot;, att2=\&quot;b\&quot;&quot;</span>.<span class='ident'>len</span>(),
+    <span class='ident'>name_end</span>: <span class='string'>b&quot;name&quot;</span>.<span class='ident'>len</span>()
+})</pre>
 
 <p>For performance reasons, most of the time, no character searches but 
 <code>b&#39;&lt;&#39;</code> and <code>b&#39;&gt;&#39;</code> are performed:</p>
