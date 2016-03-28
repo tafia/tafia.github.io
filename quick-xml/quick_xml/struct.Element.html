@@ -57,12 +57,14 @@
 <code>rust Event::Start(Element { buf: b&quot;name att1=\&quot;a\&quot;, att2=\&quot;b\&quot;&quot;, start: 0 end: b&quot;name att1=\&quot;a\&quot;, att2=\&quot;b\&quot;&quot;.len(), name_end: b&quot;name&quot;.len() })</code></p>
 
 <p>For performance reasons, most of the time, no character searches but 
-<code>b&#39;&lt;&#39;</code> and <code>b&#39;&gt;&#39;</code> are performed:
-- no attribute parsing: use lazy <code>Attributes</code> iterator only when needed
-- no namespace awareness as it requires parsing all <code>Start</code> element attributes
-- no utf8 conversion: prefer searching statically known bytes patterns 
-when possible (<code>e.name() == b&quot;myname&quot;</code>) then use the <code>.as_str()</code> 
-or <code>.into_string()</code> methods</p>
+<code>b&#39;&lt;&#39;</code> and <code>b&#39;&gt;&#39;</code> are performed:</p>
+
+<ul>
+<li>no attribute parsing: use lazy <code>Attributes</code> iterator only when needed</li>
+<li>no namespace awareness as it requires parsing all <code>Start</code> element attributes</li>
+<li>no utf8 conversion: prefer searching statically known bytes patterns when possible 
+(<code>e.name() == b&quot;myname&quot;</code>), then use the <code>.as_str()</code> or <code>.into_string()</code> methods</li>
+</ul>
 </div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../quick_xml/struct.Element.html' title='quick_xml::Element'>Element</a></code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>&lt;A&gt;(name: A) -&gt; <a class='struct' href='../quick_xml/struct.Element.html' title='quick_xml::Element'>Element</a> <span class='where'>where A: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>]</a>&gt;</span></code></h4>
 <div class='docblock'><p>Creates a new Element from the given name.
 name is a reference that can be converted to a byte slice, such as &amp;[u8] or &amp;str</p>

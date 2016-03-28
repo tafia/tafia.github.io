@@ -1126,11 +1126,11 @@
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// For performance reasons, most of the time, no character searches but </span>
 <span class='doccomment'>/// `b&#39;&lt;&#39;` and `b&#39;&gt;&#39;` are performed:</span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>/// - no attribute parsing: use lazy `Attributes` iterator only when needed</span>
 <span class='doccomment'>/// - no namespace awareness as it requires parsing all `Start` element attributes</span>
-<span class='doccomment'>/// - no utf8 conversion: prefer searching statically known bytes patterns </span>
-<span class='doccomment'>/// when possible (`e.name() == b&quot;myname&quot;`) then use the `.as_str()` </span>
-<span class='doccomment'>/// or `.into_string()` methods</span>
+<span class='doccomment'>/// - no utf8 conversion: prefer searching statically known bytes patterns when possible </span>
+<span class='doccomment'>/// (`e.name() == b&quot;myname&quot;`), then use the `.as_str()` or `.into_string()` methods</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Element</span> {
     <span class='doccomment'>/// content of the element, before any utf8 conversion</span>
     <span class='ident'>buf</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>,
