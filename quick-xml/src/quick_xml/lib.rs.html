@@ -1079,7 +1079,7 @@
     }
 }
 
-<span class='doccomment'>/// Iterator on csv returning rows</span>
+<span class='doccomment'>/// Iterator on xml returning `Event`s</span>
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>B</span>: <span class='ident'>BufRead</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>XmlReader</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span> {
 
     <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>ResultPos</span><span class='op'>&lt;</span><span class='ident'>Event</span><span class='op'>&gt;</span>;
