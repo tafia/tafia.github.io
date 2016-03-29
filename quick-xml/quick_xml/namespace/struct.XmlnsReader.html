@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `XmlReader` struct in crate `quick_xml`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, XmlReader">
+    <meta name="description" content="API documentation for the Rust `XmlnsReader` struct in crate `quick_xml`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, XmlnsReader">
 
-    <title>quick_xml::XmlReader - Rust</title>
+    <title>quick_xml::namespace::XmlnsReader - Rust</title>
 
-    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
 
     
     
@@ -27,7 +27,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='index.html'>quick_xml</a></p><script>window.sidebarCurrent = {name: 'XmlReader', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='../index.html'>quick_xml</a>::<wbr><a href='index.html'>namespace</a></p><script>window.sidebarCurrent = {name: 'XmlnsReader', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -42,70 +42,55 @@
     </nav>
 
     <section id='main' class="content struct">
-<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>quick_xml</a>::<wbr><a class='struct' href=''>XmlReader</a></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>quick_xml</a>::<wbr><a href='index.html'>namespace</a>::<wbr><a class='struct' href=''>XmlnsReader</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-195' class='srclink' href='../src/quick_xml/lib.rs.html#85-102' title='goto source code'>[src]</a></span></h1>
-<pre class='rust struct'>pub struct XmlReader&lt;B: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.BufRead.html' title='std::io::BufRead'>BufRead</a>&gt; {
+        </span><a id='src-123' class='srclink' href='../../src/quick_xml/namespace.rs.html#63-66' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct XmlnsReader&lt;R: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.BufRead.html' title='std::io::BufRead'>BufRead</a>&gt; {
     // some fields omitted
-}</pre><div class='docblock'><p>A Xml reader</p>
+}</pre><div class='docblock'><p>XmlnsReader iterator which wraps XmlReader iterator and
+adds namespace resolutions</p>
 
-<p>Consumes a <code>BufRead</code> and streams xml <code>Event</code>s</p>
-<pre class='rust rust-example-rendered'>
+<h1 id='example' class='section-header'><a href='#example'>Example</a></h1><pre class='rust rust-example-rendered'>
 <span class='kw'>use</span> <span class='ident'>quick_xml</span>::{<span class='ident'>XmlReader</span>, <span class='ident'>Event</span>};
+<span class='kw'>use</span> <span class='ident'>quick_xml</span>::<span class='ident'>namespace</span>::<span class='ident'>XmlnsReader</span>;
  
 <span class='kw'>let</span> <span class='ident'>xml</span> <span class='op'>=</span> <span class='string'>r#&quot;&lt;tag1 att1 = &quot;test&quot;&gt;
                 &lt;tag2&gt;&lt;!--Test comment--&gt;Test&lt;/tag2&gt;
                 &lt;tag2&gt;Test 2&lt;/tag2&gt;
             &lt;/tag1&gt;&quot;#</span>;
-<span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>XmlReader</span>::<span class='ident'>from_str</span>(<span class='ident'>xml</span>).<span class='ident'>trim_text</span>(<span class='boolval'>true</span>);
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>XmlReader</span>::<span class='ident'>from_str</span>(<span class='ident'>xml</span>).<span class='ident'>trim_text</span>(<span class='boolval'>true</span>)
+                 .<span class='ident'>namespaced</span>();
 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>count</span> <span class='op'>=</span> <span class='number'>0</span>;
 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>txt</span> <span class='op'>=</span> <span class='ident'>Vec</span>::<span class='ident'>new</span>();
-<span class='kw'>for</span> <span class='ident'>r</span> <span class='kw'>in</span> <span class='ident'>reader</span> {
+<span class='comment'>// need to use `while let` in order to have access to `reader.resolve` for attributes</span>
+<span class='comment'>// namespaces</span>
+<span class='kw'>while</span> <span class='kw'>let</span> <span class='prelude-val'>Some</span>(<span class='ident'>r</span>) <span class='op'>=</span> <span class='ident'>reader</span>.<span class='ident'>next</span>() {
     <span class='kw'>match</span> <span class='ident'>r</span> {
-        <span class='prelude-val'>Ok</span>(<span class='ident'>Event</span>::<span class='ident'>Start</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>)) <span class='op'>=&gt;</span> {
+        <span class='comment'>// XmlnsReader iterates ResultPos&lt;(Option&lt;&amp;[u8]&gt;, Event)&gt; with the Option&lt;&amp;[u8]&gt; being</span>
+        <span class='comment'>// the resolved Namespace, if any</span>
+        <span class='prelude-val'>Ok</span>((<span class='kw-2'>ref</span> <span class='ident'>n</span>, <span class='ident'>Event</span>::<span class='ident'>Start</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>))) <span class='op'>=&gt;</span> {
             <span class='kw'>match</span> <span class='ident'>e</span>.<span class='ident'>name</span>() {
-                <span class='string'>b&quot;tag1&quot;</span> <span class='op'>=&gt;</span> <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;attributes values: {:?}&quot;</span>, 
-                                 <span class='ident'>e</span>.<span class='ident'>attributes</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>a</span><span class='op'>|</span> <span class='ident'>a</span>.<span class='ident'>unwrap</span>().<span class='number'>1</span>).<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>()),
+                <span class='string'>b&quot;tag1&quot;</span> <span class='op'>=&gt;</span> <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;attributes keys: {:?}&quot;</span>, 
+                                 <span class='ident'>e</span>.<span class='ident'>attributes</span>()
+                                 <span class='comment'>// use `reader.resolve` to get attribute namespace resolution</span>
+                                 .<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>a</span><span class='op'>|</span> <span class='ident'>reader</span>.<span class='ident'>resolve</span>(<span class='ident'>a</span>.<span class='ident'>unwrap</span>().<span class='number'>0</span>))
+                                 .<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>()),
                 <span class='string'>b&quot;tag2&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>count</span> <span class='op'>+=</span> <span class='number'>1</span>,
                 _ <span class='op'>=&gt;</span> (),
             }
         },
-        <span class='prelude-val'>Ok</span>(<span class='ident'>Event</span>::<span class='ident'>Text</span>(<span class='ident'>e</span>)) <span class='op'>=&gt;</span> <span class='ident'>txt</span>.<span class='ident'>push</span>(<span class='ident'>e</span>.<span class='ident'>into_string</span>()),
+        <span class='prelude-val'>Ok</span>((_, <span class='ident'>Event</span>::<span class='ident'>Text</span>(<span class='ident'>e</span>))) <span class='op'>=&gt;</span> <span class='ident'>txt</span>.<span class='ident'>push</span>(<span class='ident'>e</span>.<span class='ident'>into_string</span>()),
         <span class='prelude-val'>Err</span>((<span class='ident'>e</span>, <span class='ident'>pos</span>)) <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;{:?} at buffer position {}&quot;</span>, <span class='ident'>e</span>, <span class='ident'>pos</span>),
         _ <span class='op'>=&gt;</span> (),
     }
 }</pre>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;B: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.BufRead.html' title='std::io::BufRead'>BufRead</a>&gt; <a class='struct' href='../quick_xml/struct.XmlReader.html' title='quick_xml::XmlReader'>XmlReader</a>&lt;B&gt;</code></h3><div class='impl-items'><h4 id='method.from_reader' class='method'><code>fn <a href='#method.from_reader' class='fnname'>from_reader</a>(reader: B) -&gt; <a class='struct' href='../quick_xml/struct.XmlReader.html' title='quick_xml::XmlReader'>XmlReader</a>&lt;B&gt;</code></h4>
-<div class='docblock'><p>Creates a XmlReader from a generic BufReader</p>
-</div><h4 id='method.namespaced' class='method'><code>fn <a href='#method.namespaced' class='fnname'>namespaced</a>(self) -&gt; <a class='struct' href='../quick_xml/namespace/struct.XmlnsReader.html' title='quick_xml::namespace::XmlnsReader'>XmlnsReader</a>&lt;B&gt;</code></h4>
-<div class='docblock'><p>Converts into a <code>XmlnsReader</code> iterator</p>
-</div><h4 id='method.trim_text' class='method'><code>fn <a href='#method.trim_text' class='fnname'>trim_text</a>(self, val: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>) -&gt; <a class='struct' href='../quick_xml/struct.XmlReader.html' title='quick_xml::XmlReader'>XmlReader</a>&lt;B&gt;</code></h4>
-<div class='docblock'><p>Change trim_text default behaviour (false per default)</p>
-
-<p>When set to true, all Text events are trimed. If they are empty, no event if pushed</p>
-</div><h4 id='method.with_check' class='method'><code>fn <a href='#method.with_check' class='fnname'>with_check</a>(self, val: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>) -&gt; <a class='struct' href='../quick_xml/struct.XmlReader.html' title='quick_xml::XmlReader'>XmlReader</a>&lt;B&gt;</code></h4>
-<div class='docblock'><p>Change default with_check (true per default)</p>
-
-<p>When set to true, it won&#39;t check if End node match last Start node.
-If the xml is known to be sane (already processed etc ...) this saves extra time</p>
-</div><h4 id='method.read_to_end' class='method'><code>fn <a href='#method.read_to_end' class='fnname'>read_to_end</a>&lt;K: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>]</a>&gt;&gt;(&amp;mut self, end: K) -&gt; <a class='type' href='../quick_xml/error/type.ResultPos.html' title='quick_xml::error::ResultPos'>ResultPos</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></h4>
-<div class='docblock'><p>Reads until end element is found</p>
-
-<p>Manages nested cases where parent and child elements have the same name</p>
-</div><h4 id='method.read_text' class='method'><code>fn <a href='#method.read_text' class='fnname'>read_text</a>&lt;K: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>]</a>&gt;&gt;(&amp;mut self, end: K) -&gt; <a class='type' href='../quick_xml/error/type.ResultPos.html' title='quick_xml::error::ResultPos'>ResultPos</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;</code></h4>
-<div class='docblock'><p>Reads next event, if <code>Event::Text</code> or <code>Event::End</code>,
-then returns a <code>String</code>, else returns an error</p>
-</div><h4 id='method.buffer_position' class='method'><code>fn <a href='#method.buffer_position' class='fnname'>buffer_position</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></h4>
-<div class='docblock'><p>Gets the current BufRead position
-Useful when debugging errors</p>
-</div></div><h3 class='impl'><code>impl <a class='struct' href='../quick_xml/struct.XmlReader.html' title='quick_xml::XmlReader'>XmlReader</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/io/buffered/struct.BufReader.html' title='std::io::buffered::BufReader'>BufReader</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/fs/struct.File.html' title='std::fs::File'>File</a>&gt;&gt;</code></h3><div class='impl-items'><h4 id='method.from_file' class='method'><code>fn <a href='#method.from_file' class='fnname'>from_file</a>&lt;P: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/path/struct.Path.html' title='std::path::Path'>Path</a>&gt;&gt;(path: P) -&gt; <a class='type' href='../quick_xml/error/type.Result.html' title='quick_xml::error::Result'>Result</a>&lt;<a class='struct' href='../quick_xml/struct.XmlReader.html' title='quick_xml::XmlReader'>XmlReader</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/io/buffered/struct.BufReader.html' title='std::io::buffered::BufReader'>BufReader</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/std/fs/struct.File.html' title='std::fs::File'>File</a>&gt;&gt;&gt;</code></h4>
-<div class='docblock'><p>Creates a xml reader from a file path</p>
-</div></div><h3 class='impl'><code>impl&lt;'a&gt; <a class='struct' href='../quick_xml/struct.XmlReader.html' title='quick_xml::XmlReader'>XmlReader</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;'a [</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;</code></h3><div class='impl-items'><h4 id='method.from_str' class='method'><code>fn <a href='#method.from_str' class='fnname'>from_str</a>(s: &amp;'a <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='../quick_xml/struct.XmlReader.html' title='quick_xml::XmlReader'>XmlReader</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;'a [</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;</code></h4>
-<div class='docblock'><p>Creates a xml reader for an in memory string buffer.</p>
-</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;B: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.BufRead.html' title='std::io::BufRead'>BufRead</a>&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a> for <a class='struct' href='../quick_xml/struct.XmlReader.html' title='quick_xml::XmlReader'>XmlReader</a>&lt;B&gt;</code></h3><div class='docblock'><p>Iterator on csv returning rows</p>
-</div><div class='impl-items'><h4 id='assoc_type.Item' class='type'><code>type Item = <a class='type' href='../quick_xml/error/type.ResultPos.html' title='quick_xml::error::ResultPos'>ResultPos</a>&lt;<a class='enum' href='../quick_xml/enum.Event.html' title='quick_xml::Event'>Event</a>&gt;</code></h4>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;R: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.BufRead.html' title='std::io::BufRead'>BufRead</a>&gt; <a class='struct' href='../../quick_xml/namespace/struct.XmlnsReader.html' title='quick_xml::namespace::XmlnsReader'>XmlnsReader</a>&lt;R&gt;</code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(reader: <a class='struct' href='../../quick_xml/struct.XmlReader.html' title='quick_xml::XmlReader'>XmlReader</a>&lt;R&gt;) -&gt; <a class='struct' href='../../quick_xml/namespace/struct.XmlnsReader.html' title='quick_xml::namespace::XmlnsReader'>XmlnsReader</a>&lt;R&gt;</code></h4>
+<div class='docblock'><p>Converts a <code>XmlReader</code> into a <code>XmlnsReader</code> iterator</p>
+</div><h4 id='method.resolve' class='method'><code>fn <a href='#method.resolve' class='fnname'>resolve</a>&lt;'a, 'b&gt;(&amp;'a self, qname: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;'b [</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;'a [</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;'b [</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>)</a></code></h4>
+<div class='docblock'><p>Resolves a qualified name into (namespace value, local name)</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;R: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.BufRead.html' title='std::io::BufRead'>BufRead</a>&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Iterator</a> for <a class='struct' href='../../quick_xml/namespace/struct.XmlnsReader.html' title='quick_xml::namespace::XmlnsReader'>XmlnsReader</a>&lt;R&gt;</code></h3><div class='impl-items'><h4 id='assoc_type.Item' class='type'><code>type Item = <a class='type' href='../../quick_xml/error/type.ResultPos.html' title='quick_xml::error::ResultPos'>ResultPos</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>&gt;&gt;, <a class='enum' href='../../quick_xml/enum.Event.html' title='quick_xml::Event'>Event</a>)</a>&gt;</code></h4>
 <h4 id='method.next' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#method.next' class='fnname'>next</a>(&amp;mut self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self::<a class='trait' href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html' title='core::iter::Iterator'>Item</a>&gt;</code></h4>
 <h4 id='method.size_hint' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#method.size_hint' class='fnname'>size_hint</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>&gt;)</a></code></h4>
 <h4 id='method.count' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html#method.count' class='fnname'>count</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></h4>
@@ -207,13 +192,13 @@ Useful when debugging errors</p>
     
 
     <script>
-        window.rootPath = "../";
+        window.rootPath = "../../";
         window.currentCrate = "quick_xml";
         window.playgroundUrl = "";
     </script>
-    <script src="../jquery.js"></script>
-    <script src="../main.js"></script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
     
-    <script defer src="../search-index.js"></script>
+    <script defer src="../../search-index.js"></script>
 </body>
 </html>

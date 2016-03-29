@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `AsStr` trait in crate `quick_xml`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, AsStr">
+    <meta name="description" content="API documentation for the Rust `namespace` mod in crate `quick_xml`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, namespace">
 
-    <title>quick_xml::AsStr - Rust</title>
+    <title>quick_xml::namespace - Rust</title>
 
-    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
 
     
     
@@ -27,7 +27,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='index.html'>quick_xml</a></p><script>window.sidebarCurrent = {name: 'AsStr', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='../index.html'>quick_xml</a></p><script>window.sidebarCurrent = {name: 'namespace', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -41,26 +41,25 @@
         </form>
     </nav>
 
-    <section id='main' class="content trait">
-<h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>quick_xml</a>::<wbr><a class='trait' href=''>AsStr</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>quick_xml</a>::<wbr><a class='mod' href=''>namespace</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-189' class='srclink' href='../src/quick_xml/lib.rs.html#43-46' title='goto source code'>[src]</a></span></h1>
-<pre class='rust trait'>pub trait AsStr {
-    fn <a href='#tymethod.as_str' class='fnname'>as_str</a>(&amp;self) -&gt; <a class='type' href='../quick_xml/error/type.Result.html' title='quick_xml::error::Result'>Result</a>&lt;&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;;
-}</pre><div class='docblock'><p>A trait to support on-demand conversion from UTF-8</p>
-</div>
-            <h2 id='required-methods'>Required Methods</h2>
-            <div class='methods'>
-        <h3 id='tymethod.as_str' class='method stab '><code>fn <a href='#tymethod.as_str' class='fnname'>as_str</a>(&amp;self) -&gt; <a class='type' href='../quick_xml/error/type.Result.html' title='quick_xml::error::Result'>Result</a>&lt;&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;</code></h3><div class='docblock'><p>Converts this to an &amp;str</p>
-</div></div>
-        <h2 id='implementors'>Implementors</h2>
-        <ul class='item-list' id='implementors-list'>
-    <li><code>impl <a class='trait' href='../quick_xml/trait.AsStr.html' title='quick_xml::AsStr'>AsStr</a> for <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>]</a></code></li>
-</ul><script type="text/javascript" async
-                              src="../implementors/quick_xml/trait.AsStr.js">
-                      </script></section>
+        </span><a id='src-108' class='srclink' href='../../src/quick_xml/namespace.rs.html#1-149' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Module for managing XmlnsReader iterator</p>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.XmlnsReader.html'
+                               title='quick_xml::namespace::XmlnsReader'>XmlnsReader</a></td>
+                        <td class='docblock short'>
+                             <p>XmlnsReader iterator which wraps XmlReader iterator and
+adds namespace resolutions</p>
+
+                        </td>
+                    </tr>
+                </table></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -112,13 +111,13 @@
     
 
     <script>
-        window.rootPath = "../";
+        window.rootPath = "../../";
         window.currentCrate = "quick_xml";
         window.playgroundUrl = "";
     </script>
-    <script src="../jquery.js"></script>
-    <script src="../main.js"></script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
     
-    <script defer src="../search-index.js"></script>
+    <script defer src="../../search-index.js"></script>
 </body>
 </html>

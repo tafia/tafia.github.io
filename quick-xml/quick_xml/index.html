@@ -46,70 +46,19 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/quick_xml/lib.rs.html#1-688' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/quick_xml/lib.rs.html#1-700' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Quick XmlReader reader which performs <strong>very</strong> well.</p>
 
-<h1 id='example' class='section-header'><a href='#example'>Example</a></h1><pre class='rust rust-example-rendered'>
-<span class='kw'>use</span> <span class='ident'>quick_xml</span>::{<span class='ident'>XmlReader</span>, <span class='ident'>Event</span>};
- 
-<span class='kw'>let</span> <span class='ident'>xml</span> <span class='op'>=</span> <span class='string'>r#&quot;&lt;tag1 att1 = &quot;test&quot;&gt;
-                &lt;tag2&gt;&lt;!--Test comment--&gt;Test&lt;/tag2&gt;
-                &lt;tag2&gt;
-                    Test 2
-                &lt;/tag2&gt;
-            &lt;/tag1&gt;&quot;#</span>;
-<span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>XmlReader</span>::<span class='ident'>from_str</span>(<span class='ident'>xml</span>).<span class='ident'>trim_text</span>(<span class='boolval'>true</span>);
-<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>count</span> <span class='op'>=</span> <span class='number'>0</span>;
-<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>txt</span> <span class='op'>=</span> <span class='ident'>Vec</span>::<span class='ident'>new</span>();
-<span class='kw'>for</span> <span class='ident'>r</span> <span class='kw'>in</span> <span class='ident'>reader</span> {
-    <span class='kw'>match</span> <span class='ident'>r</span> {
-        <span class='prelude-val'>Ok</span>(<span class='ident'>Event</span>::<span class='ident'>Start</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>)) <span class='op'>=&gt;</span> {
-            <span class='kw'>match</span> <span class='ident'>e</span>.<span class='ident'>name</span>() {
-                <span class='string'>b&quot;tag1&quot;</span> <span class='op'>=&gt;</span> <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;attributes values: {:?}&quot;</span>, 
-                                 <span class='ident'>e</span>.<span class='ident'>attributes</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>a</span><span class='op'>|</span> <span class='ident'>a</span>.<span class='ident'>unwrap</span>().<span class='number'>1</span>).<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>()),
-                <span class='string'>b&quot;tag2&quot;</span> <span class='op'>=&gt;</span> <span class='ident'>count</span> <span class='op'>+=</span> <span class='number'>1</span>,
-                _ <span class='op'>=&gt;</span> (),
-            }
-        },
-        <span class='prelude-val'>Ok</span>(<span class='ident'>Event</span>::<span class='ident'>Text</span>(<span class='ident'>e</span>)) <span class='op'>=&gt;</span> <span class='ident'>txt</span>.<span class='ident'>push</span>(<span class='ident'>e</span>.<span class='ident'>into_string</span>()),
-        <span class='prelude-val'>Err</span>((<span class='ident'>e</span>, <span class='ident'>pos</span>)) <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;{:?} at buffer position {}&quot;</span>, <span class='ident'>e</span>, <span class='ident'>pos</span>),
-        _ <span class='op'>=&gt;</span> (),
-    }
-}</pre>
+<h2 id='reader' class='section-header'><a href='#reader'>Reader</a></h2>
+<p>Depending on your needs, you can use:</p>
 
-<h1 id='example-of-transforming-xml' class='section-header'><a href='#example-of-transforming-xml'>Example of transforming XML</a></h1><pre class='rust rust-example-rendered'>
-<span class='kw'>use</span> <span class='ident'>quick_xml</span>::{<span class='ident'>AsStr</span>, <span class='ident'>Element</span>, <span class='ident'>Event</span>, <span class='ident'>XmlReader</span>, <span class='ident'>XmlWriter</span>};
-<span class='kw'>use</span> <span class='ident'>quick_xml</span>::<span class='ident'>Event</span>::<span class='op'>*</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>Cursor</span>;
-<span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>;
- 
-<span class='kw'>let</span> <span class='ident'>xml</span> <span class='op'>=</span> <span class='string'>r#&quot;&lt;this_tag k1=&quot;v1&quot; k2=&quot;v2&quot;&gt;&lt;child&gt;text&lt;/child&gt;&lt;/this_tag&gt;&quot;#</span>;
-<span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>XmlReader</span>::<span class='ident'>from_str</span>(<span class='ident'>xml</span>).<span class='ident'>trim_text</span>(<span class='boolval'>true</span>);
-<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>writer</span> <span class='op'>=</span> <span class='ident'>XmlWriter</span>::<span class='ident'>new</span>(<span class='ident'>Cursor</span>::<span class='ident'>new</span>(<span class='ident'>Vec</span>::<span class='ident'>new</span>()));
-<span class='kw'>for</span> <span class='ident'>r</span> <span class='kw'>in</span> <span class='ident'>reader</span> {
-    <span class='kw'>match</span> <span class='ident'>r</span> {
-        <span class='prelude-val'>Ok</span>(<span class='ident'>Event</span>::<span class='ident'>Start</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>)) <span class='kw'>if</span> <span class='ident'>e</span>.<span class='ident'>name</span>() <span class='op'>==</span> <span class='string'>b&quot;this_tag&quot;</span> <span class='op'>=&gt;</span> {
-            <span class='comment'>// collect existing attributes</span>
-            <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>attrs</span> <span class='op'>=</span> <span class='ident'>e</span>.<span class='ident'>attributes</span>().<span class='ident'>map</span>(<span class='op'>|</span><span class='ident'>attr</span><span class='op'>|</span> <span class='ident'>attr</span>.<span class='ident'>unwrap</span>()).<span class='ident'>collect</span>::<span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span>_<span class='op'>&gt;&gt;</span>();
+<ul>
+<li><code>XmlReader</code>: for best performance</li>
+<li><code>XmlnsReader</code>: if you need to resolve namespaces (around 20% slower than XmlReader)</li>
+</ul>
 
-            <span class='comment'>// copy existing attributes, adds a new my-key=&quot;some value&quot; attribute</span>
-            <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>elem</span> <span class='op'>=</span> <span class='ident'>Element</span>::<span class='ident'>new</span>(<span class='string'>&quot;my_elem&quot;</span>).<span class='ident'>with_attributes</span>(<span class='ident'>attrs</span>);
-            <span class='ident'>elem</span>.<span class='ident'>push_attribute</span>(<span class='string'>b&quot;my-key&quot;</span>, <span class='string'>&quot;some value&quot;</span>);
-
-            <span class='comment'>// writes the event to the writer</span>
-            <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>writer</span>.<span class='ident'>write</span>(<span class='ident'>Start</span>(<span class='ident'>elem</span>)).<span class='ident'>is_ok</span>());
-        },
-        <span class='prelude-val'>Ok</span>(<span class='ident'>Event</span>::<span class='ident'>End</span>(<span class='kw-2'>ref</span> <span class='ident'>e</span>)) <span class='kw'>if</span> <span class='ident'>e</span>.<span class='ident'>name</span>() <span class='op'>==</span> <span class='string'>b&quot;this_tag&quot;</span> <span class='op'>=&gt;</span> {
-            <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>writer</span>.<span class='ident'>write</span>(<span class='ident'>End</span>(<span class='ident'>Element</span>::<span class='ident'>new</span>(<span class='string'>&quot;my_elem&quot;</span>))).<span class='ident'>is_ok</span>());
-        },
-        <span class='prelude-val'>Ok</span>(<span class='ident'>e</span>) <span class='op'>=&gt;</span> <span class='macro'>assert</span><span class='macro'>!</span>(<span class='ident'>writer</span>.<span class='ident'>write</span>(<span class='ident'>e</span>).<span class='ident'>is_ok</span>()),
-        <span class='prelude-val'>Err</span>((<span class='ident'>e</span>, <span class='ident'>pos</span>)) <span class='op'>=&gt;</span> <span class='macro'>panic</span><span class='macro'>!</span>(<span class='string'>&quot;{:?} at buffer position {}&quot;</span>, <span class='ident'>e</span>, <span class='ident'>pos</span>),
-    }
-}
-
-<span class='kw'>let</span> <span class='ident'>result</span> <span class='op'>=</span> <span class='ident'>writer</span>.<span class='ident'>into_inner</span>().<span class='ident'>into_inner</span>();
-<span class='kw'>let</span> <span class='ident'>expected</span> <span class='op'>=</span> <span class='string'>r#&quot;&lt;my_elem k1=&quot;v1&quot; k2=&quot;v2&quot; my-key=&quot;some value&quot;&gt;&lt;child&gt;text&lt;/child&gt;&lt;/my_elem&gt;&quot;#</span>;
-<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>result</span>, <span class='ident'>expected</span>.<span class='ident'>as_bytes</span>());</pre>
+<h2 id='writer' class='section-header'><a href='#writer'>Writer</a></h2>
+<p><code>XmlWriter</code>: to write xmls. Can be nested with readers if you want to transform xmls</p>
 </div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
 <table>
                     <tr class=' module-item'>
@@ -126,6 +75,15 @@
                                title='quick_xml::error'>error</a></td>
                         <td class='docblock short'>
                              <p>Error management module</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='mod' href='namespace/index.html'
+                               title='quick_xml::namespace'>namespace</a></td>
+                        <td class='docblock short'>
+                             <p>Module for managing XmlnsReader iterator</p>
 
                         </td>
                     </tr>
@@ -153,7 +111,7 @@
                         <td><a class='struct' href='struct.XmlReader.html'
                                title='quick_xml::XmlReader'>XmlReader</a></td>
                         <td class='docblock short'>
-                             <p>Xml reader</p>
+                             <p>A Xml reader</p>
 
                         </td>
                     </tr>

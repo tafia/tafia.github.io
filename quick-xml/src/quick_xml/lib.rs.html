@@ -729,76 +729,31 @@
 <span id="686">686</span>
 <span id="687">687</span>
 <span id="688">688</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Quick XmlReader reader which performs **very** well.</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! # Example</span>
+<span class='doccomment'>//! ## Reader</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! ```</span>
-<span class='doccomment'>//! use quick_xml::{XmlReader, Event};</span>
-<span class='doccomment'>//! </span>
-<span class='doccomment'>//! let xml = r#&quot;&lt;tag1 att1 = &quot;test&quot;&gt;</span>
-<span class='doccomment'>//!                 &lt;tag2&gt;&lt;!--Test comment--&gt;Test&lt;/tag2&gt;</span>
-<span class='doccomment'>//!                 &lt;tag2&gt;</span>
-<span class='doccomment'>//!                     Test 2</span>
-<span class='doccomment'>//!                 &lt;/tag2&gt;</span>
-<span class='doccomment'>//!             &lt;/tag1&gt;&quot;#;</span>
-<span class='doccomment'>//! let reader = XmlReader::from_str(xml).trim_text(true);</span>
-<span class='doccomment'>//! let mut count = 0;</span>
-<span class='doccomment'>//! let mut txt = Vec::new();</span>
-<span class='doccomment'>//! for r in reader {</span>
-<span class='doccomment'>//!     match r {</span>
-<span class='doccomment'>//!         Ok(Event::Start(ref e)) =&gt; {</span>
-<span class='doccomment'>//!             match e.name() {</span>
-<span class='doccomment'>//!                 b&quot;tag1&quot; =&gt; println!(&quot;attributes values: {:?}&quot;, </span>
-<span class='doccomment'>//!                                  e.attributes().map(|a| a.unwrap().1).collect::&lt;Vec&lt;_&gt;&gt;()),</span>
-<span class='doccomment'>//!                 b&quot;tag2&quot; =&gt; count += 1,</span>
-<span class='doccomment'>//!                 _ =&gt; (),</span>
-<span class='doccomment'>//!             }</span>
-<span class='doccomment'>//!         },</span>
-<span class='doccomment'>//!         Ok(Event::Text(e)) =&gt; txt.push(e.into_string()),</span>
-<span class='doccomment'>//!         Err((e, pos)) =&gt; panic!(&quot;{:?} at buffer position {}&quot;, e, pos),</span>
-<span class='doccomment'>//!         _ =&gt; (),</span>
-<span class='doccomment'>//!     }</span>
-<span class='doccomment'>//! }</span>
-<span class='doccomment'>//! ```</span>
+<span class='doccomment'>//! Depending on your needs, you can use:</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! # Example of transforming XML</span>
+<span class='doccomment'>//! - `XmlReader`: for best performance</span>
+<span class='doccomment'>//! - `XmlnsReader`: if you need to resolve namespaces (around 20% slower than XmlReader)</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! ```</span>
-<span class='doccomment'>//! use quick_xml::{AsStr, Element, Event, XmlReader, XmlWriter};</span>
-<span class='doccomment'>//! use quick_xml::Event::*;</span>
-<span class='doccomment'>//! use std::io::Cursor;</span>
-<span class='doccomment'>//! use std::iter;</span>
-<span class='doccomment'>//! </span>
-<span class='doccomment'>//! let xml = r#&quot;&lt;this_tag k1=&quot;v1&quot; k2=&quot;v2&quot;&gt;&lt;child&gt;text&lt;/child&gt;&lt;/this_tag&gt;&quot;#;</span>
-<span class='doccomment'>//! let reader = XmlReader::from_str(xml).trim_text(true);</span>
-<span class='doccomment'>//! let mut writer = XmlWriter::new(Cursor::new(Vec::new()));</span>
-<span class='doccomment'>//! for r in reader {</span>
-<span class='doccomment'>//!     match r {</span>
-<span class='doccomment'>//!         Ok(Event::Start(ref e)) if e.name() == b&quot;this_tag&quot; =&gt; {</span>
-<span class='doccomment'>//!             // collect existing attributes</span>
-<span class='doccomment'>//!             let mut attrs = e.attributes().map(|attr| attr.unwrap()).collect::&lt;Vec&lt;_&gt;&gt;();</span>
+<span class='doccomment'>//! ## Writer</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//!             // copy existing attributes, adds a new my-key=&quot;some value&quot; attribute</span>
-<span class='doccomment'>//!             let mut elem = Element::new(&quot;my_elem&quot;).with_attributes(attrs);</span>
-<span class='doccomment'>//!             elem.push_attribute(b&quot;my-key&quot;, &quot;some value&quot;);</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//!             // writes the event to the writer</span>
-<span class='doccomment'>//!             assert!(writer.write(Start(elem)).is_ok());</span>
-<span class='doccomment'>//!         },</span>
-<span class='doccomment'>//!         Ok(Event::End(ref e)) if e.name() == b&quot;this_tag&quot; =&gt; {</span>
-<span class='doccomment'>//!             assert!(writer.write(End(Element::new(&quot;my_elem&quot;))).is_ok());</span>
-<span class='doccomment'>//!         },</span>
-<span class='doccomment'>//!         Ok(e) =&gt; assert!(writer.write(e).is_ok()),</span>
-<span class='doccomment'>//!         Err((e, pos)) =&gt; panic!(&quot;{:?} at buffer position {}&quot;, e, pos),</span>
-<span class='doccomment'>//!     }</span>
-<span class='doccomment'>//! }</span>
-<span class='doccomment'>//!</span>
-<span class='doccomment'>//! let result = writer.into_inner().into_inner();</span>
-<span class='doccomment'>//! let expected = r#&quot;&lt;my_elem k1=&quot;v1&quot; k2=&quot;v2&quot; my-key=&quot;some value&quot;&gt;&lt;child&gt;text&lt;/child&gt;&lt;/my_elem&gt;&quot;#;</span>
-<span class='doccomment'>//! assert_eq!(result, expected.as_bytes());</span>
-<span class='doccomment'>//! ```</span>
+<span class='doccomment'>//! `XmlWriter`: to write xmls. Can be nested with readers if you want to transform xmls</span>
 
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>deny</span>(<span class='ident'>missing_docs</span>)]</span>
 
@@ -807,6 +762,7 @@
 
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>error</span>;
 <span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>attributes</span>;
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>namespace</span>;
 
 <span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>test</span>)]</span>
 <span class='kw'>mod</span> <span class='ident'>test</span>;
@@ -820,6 +776,7 @@
 
 <span class='kw'>use</span> <span class='ident'>error</span>::{<span class='ident'>Error</span>, <span class='prelude-ty'>Result</span>, <span class='ident'>ResultPos</span>};
 <span class='kw'>use</span> <span class='ident'>attributes</span>::<span class='ident'>Attributes</span>;
+<span class='kw'>use</span> <span class='ident'>namespace</span>::<span class='ident'>XmlnsReader</span>;
 
 <span class='kw'>enum</span> <span class='ident'>TagState</span> {
     <span class='ident'>Opened</span>,
@@ -839,9 +796,36 @@
     }
 }
 
-<span class='doccomment'>/// Xml reader</span>
+<span class='doccomment'>/// A Xml reader</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Consumes a `BufRead` and streams xml Event</span>
+<span class='doccomment'>/// Consumes a `BufRead` and streams xml `Event`s</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// ```</span>
+<span class='doccomment'>/// use quick_xml::{XmlReader, Event};</span>
+<span class='doccomment'>/// </span>
+<span class='doccomment'>/// let xml = r#&quot;&lt;tag1 att1 = &quot;test&quot;&gt;</span>
+<span class='doccomment'>///                 &lt;tag2&gt;&lt;!--Test comment--&gt;Test&lt;/tag2&gt;</span>
+<span class='doccomment'>///                 &lt;tag2&gt;Test 2&lt;/tag2&gt;</span>
+<span class='doccomment'>///             &lt;/tag1&gt;&quot;#;</span>
+<span class='doccomment'>/// let reader = XmlReader::from_str(xml).trim_text(true);</span>
+<span class='doccomment'>/// let mut count = 0;</span>
+<span class='doccomment'>/// let mut txt = Vec::new();</span>
+<span class='doccomment'>/// for r in reader {</span>
+<span class='doccomment'>///     match r {</span>
+<span class='doccomment'>///         Ok(Event::Start(ref e)) =&gt; {</span>
+<span class='doccomment'>///             match e.name() {</span>
+<span class='doccomment'>///                 b&quot;tag1&quot; =&gt; println!(&quot;attributes values: {:?}&quot;, </span>
+<span class='doccomment'>///                                  e.attributes().map(|a| a.unwrap().1).collect::&lt;Vec&lt;_&gt;&gt;()),</span>
+<span class='doccomment'>///                 b&quot;tag2&quot; =&gt; count += 1,</span>
+<span class='doccomment'>///                 _ =&gt; (),</span>
+<span class='doccomment'>///             }</span>
+<span class='doccomment'>///         },</span>
+<span class='doccomment'>///         Ok(Event::Text(e)) =&gt; txt.push(e.into_string()),</span>
+<span class='doccomment'>///         Err((e, pos)) =&gt; panic!(&quot;{:?} at buffer position {}&quot;, e, pos),</span>
+<span class='doccomment'>///         _ =&gt; (),</span>
+<span class='doccomment'>///     }</span>
+<span class='doccomment'>/// }</span>
+<span class='doccomment'>/// ```</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>XmlReader</span><span class='op'>&lt;</span><span class='ident'>B</span>: <span class='ident'>BufRead</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// reader</span>
     <span class='ident'>reader</span>: <span class='ident'>B</span>,
@@ -875,6 +859,11 @@
             <span class='ident'>with_check</span>: <span class='boolval'>true</span>,
             <span class='ident'>buf_position</span>: <span class='number'>0</span>,
         }
+    }
+
+    <span class='doccomment'>/// Converts into a `XmlnsReader` iterator</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>namespaced</span>(<span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>XmlnsReader</span><span class='op'>&lt;</span><span class='ident'>B</span><span class='op'>&gt;</span> {
+        <span class='ident'>XmlnsReader</span>::<span class='ident'>new</span>(<span class='self'>self</span>)
     }
 
     <span class='doccomment'>/// Change trim_text default behaviour (false per default)</span>
@@ -1373,6 +1362,41 @@
 <span class='doccomment'>/// Xml writer</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// Consumes a `Write` and writes xml Events</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// ```</span>
+<span class='doccomment'>/// use quick_xml::{AsStr, Element, Event, XmlReader, XmlWriter};</span>
+<span class='doccomment'>/// use quick_xml::Event::*;</span>
+<span class='doccomment'>/// use std::io::Cursor;</span>
+<span class='doccomment'>/// use std::iter;</span>
+<span class='doccomment'>/// </span>
+<span class='doccomment'>/// let xml = r#&quot;&lt;this_tag k1=&quot;v1&quot; k2=&quot;v2&quot;&gt;&lt;child&gt;text&lt;/child&gt;&lt;/this_tag&gt;&quot;#;</span>
+<span class='doccomment'>/// let reader = XmlReader::from_str(xml).trim_text(true);</span>
+<span class='doccomment'>/// let mut writer = XmlWriter::new(Cursor::new(Vec::new()));</span>
+<span class='doccomment'>/// for r in reader {</span>
+<span class='doccomment'>///     match r {</span>
+<span class='doccomment'>///         Ok(Event::Start(ref e)) if e.name() == b&quot;this_tag&quot; =&gt; {</span>
+<span class='doccomment'>///             // collect existing attributes</span>
+<span class='doccomment'>///             let mut attrs = e.attributes().map(|attr| attr.unwrap()).collect::&lt;Vec&lt;_&gt;&gt;();</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>///             // copy existing attributes, adds a new my-key=&quot;some value&quot; attribute</span>
+<span class='doccomment'>///             let mut elem = Element::new(&quot;my_elem&quot;).with_attributes(attrs);</span>
+<span class='doccomment'>///             elem.push_attribute(b&quot;my-key&quot;, &quot;some value&quot;);</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>///             // writes the event to the writer</span>
+<span class='doccomment'>///             assert!(writer.write(Start(elem)).is_ok());</span>
+<span class='doccomment'>///         },</span>
+<span class='doccomment'>///         Ok(Event::End(ref e)) if e.name() == b&quot;this_tag&quot; =&gt; {</span>
+<span class='doccomment'>///             assert!(writer.write(End(Element::new(&quot;my_elem&quot;))).is_ok());</span>
+<span class='doccomment'>///         },</span>
+<span class='doccomment'>///         Ok(e) =&gt; assert!(writer.write(e).is_ok()),</span>
+<span class='doccomment'>///         Err((e, pos)) =&gt; panic!(&quot;{:?} at buffer position {}&quot;, e, pos),</span>
+<span class='doccomment'>///     }</span>
+<span class='doccomment'>/// }</span>
+<span class='doccomment'>///</span>
+<span class='doccomment'>/// let result = writer.into_inner().into_inner();</span>
+<span class='doccomment'>/// let expected = r#&quot;&lt;my_elem k1=&quot;v1&quot; k2=&quot;v2&quot; my-key=&quot;some value&quot;&gt;&lt;child&gt;text&lt;/child&gt;&lt;/my_elem&gt;&quot;#;</span>
+<span class='doccomment'>/// assert_eq!(result, expected.as_bytes());</span>
+<span class='doccomment'>/// ```</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>XmlWriter</span><span class='op'>&lt;</span><span class='ident'>W</span>: <span class='ident'>Write</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// underlying writer</span>
     <span class='ident'>writer</span>: <span class='ident'>W</span>
