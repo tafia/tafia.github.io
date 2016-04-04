@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Error","An error produced by an operation on Xml data."]],"type":[["Result","Result type"],["ResultPos","Result type with current buffer position"]]});
+initSidebarItems({"enum":[["Error","An error produced by an operation on Xml data."]],"type":[["Result","Result type"],["ResultPos","Result type with positionPosition represents byte index relative to xml file when iterating xml `Event`s element node when iterating on `Attribute`s. You can find xml  relative position using `XmlReader::buffer_position`"]]});

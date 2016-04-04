@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["XmlnsReader","XmlnsReader iterator which wraps XmlReader iterator and adds namespace resolutions"]]});
+initSidebarItems({"struct":[["XmlnsReader","XmlnsReader iterator which wraps XmlReader iterator and adds namespace resolutionsExample"]]});

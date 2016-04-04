@@ -46,7 +46,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/quick_xml/lib.rs.html#1-700' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/quick_xml/lib.rs.html#1-724' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Quick XmlReader reader which performs <strong>very</strong> well.</p>
 
 <h2 id='reader' class='section-header'><a href='#reader'>Reader</a></h2>
@@ -54,7 +54,7 @@
 
 <ul>
 <li><code>XmlReader</code>: for best performance</li>
-<li><code>XmlnsReader</code>: if you need to resolve namespaces (around 20% slower than XmlReader)</li>
+<li><code>XmlnsReader</code>: if you need to resolve namespaces (around 50% slower than XmlReader)</li>
 </ul>
 
 <h2 id='writer' class='section-header'><a href='#writer'>Writer</a></h2>
@@ -66,7 +66,6 @@
                                title='quick_xml::attributes'>attributes</a></td>
                         <td class='docblock short'>
                              <p>Xml Attributes module</p>
-
                         </td>
                     </tr>
                 
@@ -75,7 +74,6 @@
                                title='quick_xml::error'>error</a></td>
                         <td class='docblock short'>
                              <p>Error management module</p>
-
                         </td>
                     </tr>
                 
@@ -84,7 +82,6 @@
                                title='quick_xml::namespace'>namespace</a></td>
                         <td class='docblock short'>
                              <p>Module for managing XmlnsReader iterator</p>
-
                         </td>
                     </tr>
                 </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
@@ -94,7 +91,6 @@
                                title='quick_xml::Element'>Element</a></td>
                         <td class='docblock short'>
                              <p>General content of an event (aka node)</p>
-
                         </td>
                     </tr>
                 
@@ -103,7 +99,6 @@
                                title='quick_xml::XmlDecl'>XmlDecl</a></td>
                         <td class='docblock short'>
                              <p>Wrapper around Element to parse XmlDecl</p>
-
                         </td>
                     </tr>
                 
@@ -112,7 +107,6 @@
                                title='quick_xml::XmlReader'>XmlReader</a></td>
                         <td class='docblock short'>
                              <p>A Xml reader</p>
-
                         </td>
                     </tr>
                 
@@ -121,7 +115,6 @@
                                title='quick_xml::XmlWriter'>XmlWriter</a></td>
                         <td class='docblock short'>
                              <p>Xml writer</p>
-
                         </td>
                     </tr>
                 </table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
@@ -131,7 +124,6 @@
                                title='quick_xml::Event'>Event</a></td>
                         <td class='docblock short'>
                              <p>Event to interprete node as they are parsed</p>
-
                         </td>
                     </tr>
                 </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
@@ -141,7 +133,6 @@
                                title='quick_xml::AsStr'>AsStr</a></td>
                         <td class='docblock short'>
                              <p>A trait to support on-demand conversion from UTF-8</p>
-
                         </td>
                     </tr>
                 </table></section>
@@ -187,7 +178,7 @@
 
                 <p>
                     Search functions by type signature (e.g.
-                    <code>vec -> usize</code>)
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
                 </p>
             </div>
         </div>
