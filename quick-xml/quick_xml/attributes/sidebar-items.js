@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Attributes","Iterator over attributes key/value pairs"],["UnescapedAttributes","Escaped attributesIterate over all attributes and unescapes attribute values"]]});
+initSidebarItems({"struct":[["Attributes","Iterator over attributes key/value pairs"],["UnescapedAttributes","Escaped attributes"]]});
