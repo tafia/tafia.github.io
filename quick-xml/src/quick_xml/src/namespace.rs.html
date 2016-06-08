@@ -194,6 +194,9 @@
 <span id="150">150</span>
 <span id="151">151</span>
 <span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Module for managing `XmlnsReader` iterator</span>
 
@@ -201,6 +204,7 @@
 <span class='kw'>use</span> <span class='ident'>error</span>::<span class='ident'>ResultPos</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>BufRead</span>;
 
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='kw'>struct</span> <span class='ident'>Namespace</span> {
     <span class='ident'>prefix</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>,
     <span class='ident'>value</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;</span>,
@@ -211,9 +215,7 @@
 <span class='kw'>impl</span> <span class='ident'>Namespace</span> {
     <span class='kw'>fn</span> <span class='ident'>is_match</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>name</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>u8</span>]) <span class='op'>-&gt;</span> <span class='ident'>bool</span> {
         <span class='kw'>let</span> <span class='ident'>len</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>prefix</span>.<span class='ident'>len</span>();
-        <span class='ident'>name</span>.<span class='ident'>len</span>() <span class='op'>&gt;</span> <span class='ident'>len</span> <span class='op'>&amp;&amp;</span> 
-        <span class='ident'>name</span>[<span class='ident'>len</span>] <span class='op'>==</span> <span class='string'>b&#39;:&#39;</span> <span class='op'>&amp;&amp;</span>
-        <span class='kw-2'>&amp;</span><span class='ident'>name</span>[..<span class='ident'>len</span>] <span class='op'>==</span> <span class='kw-2'>&amp;</span><span class='op'>*</span><span class='self'>self</span>.<span class='ident'>prefix</span>
+        <span class='ident'>name</span>.<span class='ident'>len</span>() <span class='op'>&gt;</span> <span class='ident'>len</span> <span class='op'>&amp;&amp;</span> <span class='ident'>name</span>[<span class='ident'>len</span>] <span class='op'>==</span> <span class='string'>b&#39;:&#39;</span> <span class='op'>&amp;&amp;</span> <span class='kw-2'>&amp;</span><span class='ident'>name</span>[..<span class='ident'>len</span>] <span class='op'>==</span> <span class='kw-2'>&amp;</span><span class='op'>*</span><span class='self'>self</span>.<span class='ident'>prefix</span>
     }
 }
 
@@ -225,7 +227,7 @@
 <span class='doccomment'>/// ```</span>
 <span class='doccomment'>/// use quick_xml::{XmlReader, Event};</span>
 <span class='doccomment'>/// use quick_xml::namespace::XmlnsReader;</span>
-<span class='doccomment'>/// </span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>/// let xml = r#&quot;&lt;tag1 att1 = &quot;test&quot;&gt;</span>
 <span class='doccomment'>///                 &lt;tag2&gt;&lt;!--Test comment--&gt;Test&lt;/tag2&gt;</span>
 <span class='doccomment'>///                 &lt;tag2&gt;Test 2&lt;/tag2&gt;</span>
@@ -242,7 +244,7 @@
 <span class='doccomment'>///         // the resolved Namespace, if any</span>
 <span class='doccomment'>///         Ok((ref n, Event::Start(ref e))) =&gt; {</span>
 <span class='doccomment'>///             match e.name() {</span>
-<span class='doccomment'>///                 b&quot;tag1&quot; =&gt; println!(&quot;attributes keys: {:?}&quot;, </span>
+<span class='doccomment'>///                 b&quot;tag1&quot; =&gt; println!(&quot;attributes keys: {:?}&quot;,</span>
 <span class='doccomment'>///                                  e.attributes()</span>
 <span class='doccomment'>///                                  // use `reader.resolve` to get attribute namespace resolution</span>
 <span class='doccomment'>///                                  .map(|a| reader.resolve(a.unwrap().0))</span>
@@ -257,13 +259,13 @@
 <span class='doccomment'>///     }</span>
 <span class='doccomment'>/// }</span>
 <span class='doccomment'>/// ```</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>XmlnsReader</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>BufRead</span><span class='op'>&gt;</span> {
     <span class='ident'>reader</span>: <span class='ident'>XmlReader</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>,
     <span class='ident'>namespaces</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Namespace</span><span class='op'>&gt;</span>,
 }
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>BufRead</span><span class='op'>&gt;</span> <span class='ident'>XmlnsReader</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span> {
-
     <span class='doccomment'>/// Converts a `XmlReader` into a `XmlnsReader` iterator</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>(<span class='ident'>reader</span>: <span class='ident'>XmlReader</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span>) <span class='op'>-&gt;</span> <span class='ident'>XmlnsReader</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span> {
         <span class='ident'>XmlnsReader</span> {
@@ -273,7 +275,7 @@
     }
 
     <span class='doccomment'>/// Resolves a qualified name into (namespace value, local name)</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>resolve</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='lifetime'>&#39;b</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>, <span class='ident'>qname</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;b</span>[<span class='ident'>u8</span>]) <span class='op'>-&gt;</span> (<span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span>[<span class='ident'>u8</span>]<span class='op'>&gt;</span>, <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;b</span>[<span class='ident'>u8</span>]) {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>resolve</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='lifetime'>&#39;b</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>, <span class='ident'>qname</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;b</span> [<span class='ident'>u8</span>]) <span class='op'>-&gt;</span> (<span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> [<span class='ident'>u8</span>]<span class='op'>&gt;</span>, <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;b</span> [<span class='ident'>u8</span>]) {
         <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>namespaces</span>.<span class='ident'>iter</span>().<span class='ident'>rev</span>().<span class='ident'>find</span>(<span class='op'>|</span><span class='kw-2'>ref</span> <span class='ident'>n</span><span class='op'>|</span> <span class='ident'>n</span>.<span class='ident'>is_match</span>(<span class='ident'>qname</span>)) {
             <span class='prelude-val'>Some</span>(<span class='ident'>n</span>) <span class='op'>=&gt;</span> (<span class='prelude-val'>Some</span>(<span class='kw-2'>&amp;</span><span class='ident'>n</span>.<span class='ident'>value</span>), <span class='kw-2'>&amp;</span><span class='ident'>qname</span>[(<span class='ident'>n</span>.<span class='ident'>prefix</span>.<span class='ident'>len</span>() <span class='op'>+</span> <span class='number'>1</span>)..]),
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> (<span class='prelude-val'>None</span>, <span class='ident'>qname</span>),
@@ -300,7 +302,7 @@
                     <span class='kw'>if</span> <span class='kw'>let</span> <span class='prelude-val'>Ok</span>((<span class='ident'>k</span>, <span class='ident'>v</span>)) <span class='op'>=</span> <span class='ident'>a</span> {
                         <span class='kw'>if</span> <span class='ident'>k</span>.<span class='ident'>len</span>() <span class='op'>&gt;</span> <span class='number'>6</span> <span class='op'>&amp;&amp;</span> <span class='kw-2'>&amp;</span><span class='ident'>k</span>[..<span class='number'>6</span>] <span class='op'>==</span> <span class='string'>b&quot;xmlns:&quot;</span> {
                             <span class='self'>self</span>.<span class='ident'>namespaces</span>.<span class='ident'>push</span>(<span class='ident'>Namespace</span> {
-                                <span class='ident'>prefix</span>: <span class='ident'>k</span>[<span class='number'>6</span>..].<span class='ident'>to_vec</span>(), 
+                                <span class='ident'>prefix</span>: <span class='ident'>k</span>[<span class='number'>6</span>..].<span class='ident'>to_vec</span>(),
                                 <span class='ident'>value</span>: <span class='ident'>v</span>.<span class='ident'>to_vec</span>(),
                                 <span class='ident'>element_name</span>: <span class='ident'>e</span>.<span class='ident'>name</span>().<span class='ident'>to_vec</span>(),
                                 <span class='ident'>level</span>: <span class='number'>1</span>,
@@ -310,7 +312,9 @@
                 }
                 <span class='comment'>// search namespace value</span>
                 <span class='comment'>// iterate in reverse order to find the most recent one</span>
-                <span class='kw'>let</span> <span class='ident'>namespace</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>namespaces</span>.<span class='ident'>iter</span>().<span class='ident'>rev</span>()
+                <span class='kw'>let</span> <span class='ident'>namespace</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>namespaces</span>
+                    .<span class='ident'>iter</span>()
+                    .<span class='ident'>rev</span>()
                     .<span class='ident'>find</span>(<span class='op'>|</span><span class='kw-2'>ref</span> <span class='ident'>n</span><span class='op'>|</span> <span class='ident'>n</span>.<span class='ident'>is_match</span>(<span class='ident'>e</span>.<span class='ident'>name</span>()))
                     .<span class='ident'>map</span>(<span class='op'>|</span><span class='kw-2'>ref</span> <span class='ident'>n</span><span class='op'>|</span> <span class='ident'>n</span>.<span class='ident'>value</span>.<span class='ident'>clone</span>());
 
@@ -331,16 +335,18 @@
                     <span class='prelude-val'>Some</span>(<span class='ident'>p</span>) <span class='op'>=&gt;</span> {
                         <span class='kw'>let</span> <span class='ident'>len</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>namespaces</span>.<span class='ident'>len</span>() <span class='op'>-</span> <span class='ident'>p</span>;
                         <span class='self'>self</span>.<span class='ident'>namespaces</span>.<span class='ident'>truncate</span>(<span class='ident'>len</span>)
-                    },
+                    }
                 }
                 <span class='kw'>let</span> <span class='ident'>namespace</span> <span class='op'>=</span> {
                     <span class='kw'>let</span> <span class='ident'>name</span> <span class='op'>=</span> <span class='ident'>e</span>.<span class='ident'>name</span>();
-                    <span class='self'>self</span>.<span class='ident'>namespaces</span>.<span class='ident'>iter</span>().<span class='ident'>rev</span>()
+                    <span class='self'>self</span>.<span class='ident'>namespaces</span>
+                        .<span class='ident'>iter</span>()
+                        .<span class='ident'>rev</span>()
                         .<span class='ident'>find</span>(<span class='op'>|</span><span class='kw-2'>ref</span> <span class='ident'>n</span><span class='op'>|</span> <span class='ident'>n</span>.<span class='ident'>is_match</span>(<span class='ident'>name</span>))
                         .<span class='ident'>map</span>(<span class='op'>|</span><span class='kw-2'>ref</span> <span class='ident'>n</span><span class='op'>|</span> <span class='ident'>n</span>.<span class='ident'>value</span>.<span class='ident'>clone</span>())
                 };
                 <span class='prelude-val'>Some</span>(<span class='prelude-val'>Ok</span>((<span class='ident'>namespace</span>, <span class='ident'>Event</span>::<span class='ident'>End</span>(<span class='ident'>e</span>))))
-            },
+            }
             <span class='prelude-val'>Some</span>(<span class='prelude-val'>Ok</span>(<span class='ident'>e</span>)) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='prelude-val'>Ok</span>((<span class='prelude-val'>None</span>, <span class='ident'>e</span>))),
             <span class='prelude-val'>Some</span>(<span class='prelude-val'>Err</span>(<span class='ident'>e</span>)) <span class='op'>=&gt;</span> <span class='prelude-val'>Some</span>(<span class='prelude-val'>Err</span>(<span class='ident'>e</span>)),
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> <span class='prelude-val'>None</span>,

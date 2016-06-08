@@ -47,7 +47,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-586' class='srclink' href='../src/quick_xml/src/lib.rs.html#739-742' title='goto source code'>[src]</a></span></h1>
+               </span><a id='src-639' class='srclink' href='../src/quick_xml/src/lib.rs.html#795-798' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct XmlWriter&lt;W: <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Write.html' title='std::io::Write'>Write</a>&gt; {
     // some fields omitted
 }</pre><div class='docblock'><p>Xml writer</p>
@@ -59,7 +59,7 @@
 <span class='kw'>use</span> <span class='ident'>quick_xml</span>::<span class='ident'>Event</span>::<span class='op'>*</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>Cursor</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>iter</span>;
- 
+
 <span class='kw'>let</span> <span class='ident'>xml</span> <span class='op'>=</span> <span class='string'>r#&quot;&lt;this_tag k1=&quot;v1&quot; k2=&quot;v2&quot;&gt;&lt;child&gt;text&lt;/child&gt;&lt;/this_tag&gt;&quot;#</span>;
 <span class='kw'>let</span> <span class='ident'>reader</span> <span class='op'>=</span> <span class='ident'>XmlReader</span>::<span class='ident'>from</span>(<span class='ident'>xml</span>).<span class='ident'>trim_text</span>(<span class='boolval'>true</span>);
 <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>writer</span> <span class='op'>=</span> <span class='ident'>XmlWriter</span>::<span class='ident'>new</span>(<span class='ident'>Cursor</span>::<span class='ident'>new</span>(<span class='ident'>Vec</span>::<span class='ident'>new</span>()));
@@ -93,7 +93,9 @@
 <div class='docblock'><p>Consumes this Xml Writer, returning the underlying writer.</p>
 </div><h4 id='method.write' class='method'><code>fn <a href='#method.write' class='fnname'>write</a>(&amp;mut self, event: <a class='enum' href='../quick_xml/enum.Event.html' title='quick_xml::Event'>Event</a>) -&gt; <a class='type' href='../quick_xml/error/type.Result.html' title='quick_xml::error::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></h4>
 <div class='docblock'><p>Writes the given event to the underlying writer.</p>
-</div></div></section>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl&lt;W: <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> + <a class='trait' href='https://doc.rust-lang.org/nightly/std/io/trait.Write.html' title='std::io::Write'>Write</a>&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../quick_xml/struct.XmlWriter.html' title='quick_xml::XmlWriter'>XmlWriter</a>&lt;W&gt;</code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../quick_xml/struct.XmlWriter.html' title='quick_xml::XmlWriter'>XmlWriter</a>&lt;W&gt;</code></h4>
+<h4 id='method.clone_from' class='method'><span class="since">1.0.0</span><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
+</div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>

@@ -113,6 +113,10 @@
 <span id="69">69</span>
 <span id="70">70</span>
 <span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Error management module</span>
 
@@ -139,10 +143,10 @@
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='op'>=</span> ::<span class='ident'>std</span>::<span class='ident'>result</span>::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>T</span>, <span class='ident'>Error</span><span class='op'>&gt;</span>;
 <span class='doccomment'>/// Result type with position</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Position represents byte index relative to </span>
+<span class='doccomment'>/// Position represents byte index relative to</span>
 <span class='doccomment'>///</span>
 <span class='doccomment'>/// - xml file when iterating xml `Event`s</span>
-<span class='doccomment'>/// - element node when iterating on `Attribute`s. You can find xml </span>
+<span class='doccomment'>/// - element node when iterating on `Attribute`s. You can find xml</span>
 <span class='doccomment'>/// relative position using `XmlReader::buffer_position`</span>
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>ResultPos</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span> <span class='op'>=</span> ::<span class='ident'>std</span>::<span class='ident'>result</span>::<span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>T</span>, (<span class='ident'>Error</span>, <span class='ident'>usize</span>)<span class='op'>&gt;</span>;
 
@@ -179,11 +183,15 @@
 }
 
 <span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span><span class='ident'>io</span>::<span class='ident'>Error</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
-    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: <span class='ident'>io</span>::<span class='ident'>Error</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> { <span class='ident'>Error</span>::<span class='ident'>Io</span>(<span class='ident'>err</span>) }
+    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: <span class='ident'>io</span>::<span class='ident'>Error</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
+        <span class='ident'>Error</span>::<span class='ident'>Io</span>(<span class='ident'>err</span>)
+    }
 }
 
 <span class='kw'>impl</span> <span class='ident'>From</span><span class='op'>&lt;</span><span class='ident'>Utf8Error</span><span class='op'>&gt;</span> <span class='kw'>for</span> <span class='ident'>Error</span> {
-    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: <span class='ident'>Utf8Error</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> { <span class='ident'>Error</span>::<span class='ident'>Utf8</span>(<span class='ident'>err</span>) }
+    <span class='kw'>fn</span> <span class='ident'>from</span>(<span class='ident'>err</span>: <span class='ident'>Utf8Error</span>) <span class='op'>-&gt;</span> <span class='ident'>Error</span> {
+        <span class='ident'>Error</span>::<span class='ident'>Utf8</span>(<span class='ident'>err</span>)
+    }
 }
 </pre>
 </section>
