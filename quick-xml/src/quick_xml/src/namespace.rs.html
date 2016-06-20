@@ -197,6 +197,9 @@
 <span id="153">153</span>
 <span id="154">154</span>
 <span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Module for managing `XmlnsReader` iterator</span>
 
@@ -236,17 +239,18 @@
 <span class='doccomment'>///                  .namespaced();</span>
 <span class='doccomment'>/// let mut count = 0;</span>
 <span class='doccomment'>/// let mut txt = Vec::new();</span>
-<span class='doccomment'>/// // need to use `while let` in order to have access to `reader.resolve` for attributes</span>
-<span class='doccomment'>/// // namespaces</span>
+<span class='doccomment'>/// // need to use `while let` in order to have access to `reader.resolve` </span>
+<span class='doccomment'>/// // for attributes namespaces</span>
 <span class='doccomment'>/// while let Some(r) = reader.next() {</span>
 <span class='doccomment'>///     match r {</span>
-<span class='doccomment'>///         // XmlnsReader iterates ResultPos&lt;(Option&lt;&amp;[u8]&gt;, Event)&gt; with the Option&lt;&amp;[u8]&gt; being</span>
-<span class='doccomment'>///         // the resolved Namespace, if any</span>
+<span class='doccomment'>///         // XmlnsReader iterates ResultPos&lt;(Option&lt;&amp;[u8]&gt;, Event)&gt; with </span>
+<span class='doccomment'>///         // the Option&lt;&amp;[u8]&gt; being the resolved Namespace, if any</span>
 <span class='doccomment'>///         Ok((ref n, Event::Start(ref e))) =&gt; {</span>
 <span class='doccomment'>///             match e.name() {</span>
 <span class='doccomment'>///                 b&quot;tag1&quot; =&gt; println!(&quot;attributes keys: {:?}&quot;,</span>
 <span class='doccomment'>///                                  e.attributes()</span>
-<span class='doccomment'>///                                  // use `reader.resolve` to get attribute namespace resolution</span>
+<span class='doccomment'>///                                  // use `reader.resolve` to get attribute</span>
+<span class='doccomment'>///                                  // namespace resolution</span>
 <span class='doccomment'>///                                  .map(|a| reader.resolve(a.unwrap().0))</span>
 <span class='doccomment'>///                                  .collect::&lt;Vec&lt;_&gt;&gt;()),</span>
 <span class='doccomment'>///                 b&quot;tag2&quot; =&gt; count += 1,</span>
@@ -275,7 +279,9 @@
     }
 
     <span class='doccomment'>/// Resolves a qualified name into (namespace value, local name)</span>
-    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>resolve</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='lifetime'>&#39;b</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>, <span class='ident'>qname</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;b</span> [<span class='ident'>u8</span>]) <span class='op'>-&gt;</span> (<span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> [<span class='ident'>u8</span>]<span class='op'>&gt;</span>, <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;b</span> [<span class='ident'>u8</span>]) {
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>resolve</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span>, <span class='lifetime'>&#39;b</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='self'>self</span>, <span class='ident'>qname</span>: <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;b</span> [<span class='ident'>u8</span>]) 
+        <span class='op'>-&gt;</span> (<span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> [<span class='ident'>u8</span>]<span class='op'>&gt;</span>, <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;b</span> [<span class='ident'>u8</span>]) 
+    {
         <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>namespaces</span>.<span class='ident'>iter</span>().<span class='ident'>rev</span>().<span class='ident'>find</span>(<span class='op'>|</span><span class='kw-2'>ref</span> <span class='ident'>n</span><span class='op'>|</span> <span class='ident'>n</span>.<span class='ident'>is_match</span>(<span class='ident'>qname</span>)) {
             <span class='prelude-val'>Some</span>(<span class='ident'>n</span>) <span class='op'>=&gt;</span> (<span class='prelude-val'>Some</span>(<span class='kw-2'>&amp;</span><span class='ident'>n</span>.<span class='ident'>value</span>), <span class='kw-2'>&amp;</span><span class='ident'>qname</span>[(<span class='ident'>n</span>.<span class='ident'>prefix</span>.<span class='ident'>len</span>() <span class='op'>+</span> <span class='number'>1</span>)..]),
             <span class='prelude-val'>None</span> <span class='op'>=&gt;</span> (<span class='prelude-val'>None</span>, <span class='ident'>qname</span>),
@@ -285,7 +291,7 @@
 
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>R</span>: <span class='ident'>BufRead</span><span class='op'>&gt;</span> <span class='ident'>Iterator</span> <span class='kw'>for</span> <span class='ident'>XmlnsReader</span><span class='op'>&lt;</span><span class='ident'>R</span><span class='op'>&gt;</span> {
     <span class='kw'>type</span> <span class='ident'>Item</span> <span class='op'>=</span> <span class='ident'>ResultPos</span><span class='op'>&lt;</span>(<span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>u8</span><span class='op'>&gt;&gt;</span>, <span class='ident'>Event</span>)<span class='op'>&gt;</span>;
-    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Self</span>::<span class='ident'>Item</span><span class='op'>&gt;</span> {
+    <span class='kw'>fn</span> <span class='ident'>next</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='self'>Self</span>::<span class='ident'>Item</span><span class='op'>&gt;</span> {
         <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>reader</span>.<span class='ident'>next</span>() {
             <span class='prelude-val'>Some</span>(<span class='prelude-val'>Ok</span>(<span class='ident'>Event</span>::<span class='ident'>Start</span>(<span class='ident'>e</span>))) <span class='op'>=&gt;</span> {
                 <span class='comment'>// increment existing namespace level if this same element</span>
@@ -377,6 +383,8 @@
                     <dd>Move down in search results</dd>
                     <dt>&#9166;</dt>
                     <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
                 </dl>
             </div>
 
