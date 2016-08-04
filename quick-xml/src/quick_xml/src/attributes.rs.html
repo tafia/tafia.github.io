@@ -255,8 +255,8 @@
         <span class='ident'>Attributes</span> {
             <span class='ident'>bytes</span>: <span class='ident'>buf</span>,
             <span class='ident'>position</span>: <span class='ident'>pos</span>,
-            <span class='ident'>exit</span>: <span class='bool-val'>false</span>,
-            <span class='ident'>with_checks</span>: <span class='bool-val'>true</span>,
+            <span class='ident'>exit</span>: <span class='boolvalue'>false</span>,
+            <span class='ident'>with_checks</span>: <span class='boolvalue'>true</span>,
             <span class='ident'>consumed</span>: <span class='ident'>Vec</span>::<span class='ident'>new</span>(),
         }
     }
@@ -278,7 +278,7 @@
     <span class='doccomment'>/// return Err((e, p))</span>
     <span class='doccomment'>/// sets `self.exit = true` to terminate the iterator</span>
     <span class='kw'>fn</span> <span class='ident'>error</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>, <span class='ident'>e</span>: <span class='ident'>Error</span>, <span class='ident'>p</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>ResultPos</span><span class='op'>&lt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> [<span class='ident'>u8</span>], <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> [<span class='ident'>u8</span>])<span class='op'>&gt;</span> {
-        <span class='self'>self</span>.<span class='ident'>exit</span> <span class='op'>=</span> <span class='bool-val'>true</span>;
+        <span class='self'>self</span>.<span class='ident'>exit</span> <span class='op'>=</span> <span class='boolvalue'>true</span>;
         <span class='prelude-val'>Err</span>((<span class='ident'>e</span>, <span class='ident'>p</span>))
     }
 }
@@ -300,14 +300,14 @@
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>iter</span> <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>bytes</span>[<span class='ident'>p</span>..].<span class='ident'>iter</span>().<span class='ident'>cloned</span>().<span class='ident'>enumerate</span>();
 
         <span class='kw'>let</span> <span class='ident'>start_key</span> <span class='op'>=</span> {
-            <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>found_space</span> <span class='op'>=</span> <span class='bool-val'>false</span>;
+            <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>found_space</span> <span class='op'>=</span> <span class='boolvalue'>false</span>;
             <span class='kw'>let</span> <span class='ident'>start</span>: <span class='ident'>usize</span>;
             <span class='kw'>loop</span> {
                 <span class='kw'>match</span> <span class='ident'>iter</span>.<span class='ident'>next</span>() {
                     <span class='prelude-val'>Some</span>((_, <span class='string'>b&#39; &#39;</span>)) <span class='op'>|</span> <span class='prelude-val'>Some</span>((_, <span class='string'>b&#39;\r&#39;</span>)) 
                         <span class='op'>|</span> <span class='prelude-val'>Some</span>((_, <span class='string'>b&#39;\n&#39;</span>)) <span class='op'>|</span> <span class='prelude-val'>Some</span>((_, <span class='string'>b&#39;\t&#39;</span>)) <span class='op'>=&gt;</span> {
                         <span class='kw'>if</span> <span class='op'>!</span><span class='ident'>found_space</span> {
-                            <span class='ident'>found_space</span> <span class='op'>=</span> <span class='bool-val'>true</span>;
+                            <span class='ident'>found_space</span> <span class='op'>=</span> <span class='boolvalue'>true</span>;
                         }
                     }
                     <span class='prelude-val'>Some</span>((<span class='ident'>i</span>, _)) <span class='op'>=&gt;</span> {
@@ -325,7 +325,7 @@
             <span class='ident'>start</span>
         };
 
-        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>has_equal</span> <span class='op'>=</span> <span class='bool-val'>false</span>;
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>has_equal</span> <span class='op'>=</span> <span class='boolvalue'>false</span>;
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>end_key</span> <span class='op'>=</span> <span class='prelude-val'>None</span>;
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>start_val</span> <span class='op'>=</span> <span class='prelude-val'>None</span>;
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>end_val</span> <span class='op'>=</span> <span class='prelude-val'>None</span>;
@@ -343,7 +343,7 @@
                         <span class='kw'>return</span> <span class='prelude-val'>Some</span>(<span class='self'>self</span>.<span class='ident'>error</span>(<span class='ident'>Error</span>::<span class='ident'>Malformed</span>(
                                     <span class='string'>&quot;Got 2 &#39;=&#39; tokens&quot;</span>.<span class='ident'>to_string</span>()), <span class='ident'>p</span> <span class='op'>+</span> <span class='ident'>i</span>));
                     }
-                    <span class='ident'>has_equal</span> <span class='op'>=</span> <span class='bool-val'>true</span>;
+                    <span class='ident'>has_equal</span> <span class='op'>=</span> <span class='boolvalue'>true</span>;
                     <span class='kw'>if</span> <span class='ident'>end_key</span>.<span class='ident'>is_none</span>() {
                         <span class='ident'>end_key</span> <span class='op'>=</span> <span class='prelude-val'>Some</span>(<span class='ident'>i</span>);
                     }
